@@ -1,4 +1,12 @@
 # Starter pipeline
+- task: TerraformTaskV2@2
+  inputs:
+    provider: 'azurerm'
+    command: 'init'
+    backendServiceArm: 'npsubscr1(5465cc84-e33c-4f4c-83d0-71f0055c589b)'
+    backendAzureRmResourceGroupName: 'tfstate'
+    backendAzureRmStorageAccountName: 'tfstate10571'
+    backendAzureRmContainerName: 'tfstatedevops'
 # Start with a minimal pipeline that you can customize to build and deploy your code.
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
@@ -15,13 +23,7 @@ steps:
 - script: echo Hello, world!
   displayName: 'Run a one-line script'
 
-- task:AzureResourceManagerTemplateDeployment@1
-  #displayName: Initialize Terraform
- -inputs:
-    backendServiceArm: 'np-TFSPN'
-    backendAzureRmResourceGroupName: 'tfstate'
-    backendAzureRmStorageAccountName: tfstate10571
-    backendAzureRmContainerName: tstate
+- 
     #backendAzureRmKey: '77Q4LUB5o9wRdbPYDt+0kGZP+L8Sj9E/FNXg7lZBQS5z3mLod5cyan4wA19CR1SmlqIRUFQfhuQrPVaGzNhjGw=='
     #backendAzureRmKey: 'tf/terraform.tfstate'
 
