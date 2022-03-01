@@ -7,13 +7,33 @@ trigger:
 - main
 
 pool:
+  name: Azure Pipelines
   vmImage: windows-latest
+  environment: 'test'
 
 steps:
 - script: echo Hello, world!
   displayName: 'Run a one-line script'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+- task:AzureResourceManagerTemplateDeployment@1
+  #displayName: Initialize Terraform
+  inputs:
+    backendServiceArm: 'np-TFSPN'
+    backendAzureRmResourceGroupName: 'tfstate'
+    backendAzureRmStorageAccountName: tfstate10571
+    backendAzureRmContainerName: tstate
+    #backendAzureRmKey: '77Q4LUB5o9wRdbPYDt+0kGZP+L8Sj9E/FNXg7lZBQS5z3mLod5cyan4wA19CR1SmlqIRUFQfhuQrPVaGzNhjGw=='
+    #backendAzureRmKey: 'tf/terraform.tfstate'
+
+#- task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV1@0
+- task:AzureResourceManagerTemplateDeployment@1
+  #displayName: plan Terraform
+  inputs:
+    command: plan
+    environmentServiceNameAzureRM: 'np-TFSPN'
+ 
+- task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV1@0
+  #displayName: Terraform VALIDATE and APPLY
+  inputs:
+    command: apply
+    environmentServiceNameAzureRM: 'np-TFSPN'
